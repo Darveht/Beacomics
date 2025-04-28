@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Untitled</title>
-  
+
 
 </head>
 <body>
@@ -16,54 +16,14 @@
   <title>ComicBeaboo - Plataforma de Publicación de Cómics</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-  <!-- Firebase SDKs (modulares) -->
-  <script type="module">
-    // Importa las funciones necesarias del SDK de Firebase
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-analytics.js";
-    import { 
-      getDatabase, ref, set, push, onValue, update, get, query, orderByChild 
-    } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-database.js";
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
-    // Configuración de Firebase (usa tu configuración real)
-    const firebaseConfig = {
-      apiKey: "AIzaSyC2IEDHMRS6vMdG90z5DKQrflCj3r3oSjI",
-      authDomain: "followwilk-red.firebaseapp.com",
-      databaseURL: "https://followwilk-red-default-rtdb.firebaseio.com",
-      projectId: "followwilk-red",
-      storageBucket: "followwilk-red.firebasestorage.app",
-      messagingSenderId: "667976517204",
-      appId: "1:667976517204:web:867d1e5677c9acac490fc1",
-      measurementId: "G-NB48XM3M28"
-    };
+  <script>
+    const supabaseUrl = 'https://lhowoluabckbbwrcihrn.supabase.co';
+    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxob3dvbHVhYmNrYmJ3cmNpaHJuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU0NzAxODIsImV4cCI6MjA2MTA0NjE4Mn0.YTIXc6eLlaCm1h8zvFuKhdbggcCzVdRPs5POovmPtOo';
+    const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-    // Inicializa Firebase
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
-    const database = getDatabase(app);
 
-    // Para que las funciones en scripts normales puedan usar Firebase:
-    window.database = database;
-    window.firebaseRef = ref;
-    window.firebaseSet = set;
-    window.firebasePush = push;
-    window.firebaseUpdate = update;
-    window.firebaseGet = get;
-    window.firebaseQuery = query;
-    window.firebaseOrderByChild = orderByChild;
-
-    // Ejemplo: Escucha en tiempo real el nodo "comics" y "authors"
-    onValue(ref(database, 'comics'), (snapshot) => {
-      const comicsData = snapshot.val();
-      console.log("Datos de cómics actualizados:", comicsData);
-      // Aquí podrías actualizar la UI en tiempo real, por ejemplo refrescando la sección de "Cómics Destacados"
-    });
-
-    onValue(ref(database, 'authors'), (snapshot) => {
-      const authorsData = snapshot.val();
-      console.log("Datos de autores actualizados:", authorsData);
-      // Aquí podrías actualizar la sección de autores en la UI
-    });
   </script>
 
   <!-- ESTILOS DE BÚSQUEDA -->
@@ -78,18 +38,18 @@
         --white: #ffffff;
         --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
-    
+
     * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
-    
+
     body {
         background-color: var(--light-gray);
     }
-    
+
     .navbar {
         background: var(--primary-gradient);
         height: 60px;
@@ -103,17 +63,17 @@
         z-index: 100;
         box-shadow: var(--shadow);
     }
-    
+
     .logo {
         font-weight: bold;
         font-size: 1.5rem;
     }
-    
+
     .nav-icons {
         display: flex;
         gap: 20px;
     }
-    
+
     .nav-icon {
         width: 30px;
         height: 30px;
@@ -125,11 +85,11 @@
         cursor: pointer;
         transition: all 0.3s;
     }
-    
+
     .nav-icon:hover, .nav-icon.active {
         background-color: rgba(255, 255, 255, 0.4);
     }
-    
+
     /* Search Container */
     .search-container {
         position: fixed;
@@ -144,11 +104,11 @@
         transform: translateY(100%);
         transition: transform 0.3s ease-in-out;
     }
-    
+
     .search-container.active {
         transform: translateY(0);
     }
-    
+
     .search-header {
         display: flex;
         align-items: center;
@@ -156,13 +116,13 @@
         background: var(--primary-gradient);
         color: white;
     }
-    
+
     .back-button {
         font-size: 1.2rem;
         margin-right: 15px;
         cursor: pointer;
     }
-    
+
     .search-bar {
         flex: 1;
         display: flex;
@@ -171,11 +131,11 @@
         border-radius: 5px;
         padding: 8px 15px;
     }
-    
+
     .search-bar i {
         margin-right: 10px;
     }
-    
+
     .search-input {
         flex: 1;
         border: none;
@@ -184,28 +144,28 @@
         font-size: 1rem;
         outline: none;
     }
-    
+
     .search-input::placeholder {
         color: rgba(255, 255, 255, 0.8);
     }
-    
+
     .clear-search {
         cursor: pointer;
         opacity: 0;
         transition: opacity 0.3s;
     }
-    
+
     .clear-search.visible {
         opacity: 1;
     }
-    
+
     /* Tabs */
     .search-tabs {
         display: flex;
         background-color: var(--white);
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
-    
+
     .tab {
         flex: 1;
         padding: 15px;
@@ -215,11 +175,11 @@
         color: #666;
         font-weight: 500;
     }
-    
+
     .tab.active {
         color: var(--primary-color);
     }
-    
+
     .tab.active::after {
         content: '';
         position: absolute;
@@ -229,41 +189,41 @@
         height: 3px;
         background: var(--primary-gradient);
     }
-    
+
     /* Search Results */
     .search-results {
         flex: 1;
         overflow-y: auto;
         padding: 20px;
     }
-    
+
     .results-section {
         display: none;
     }
-    
+
     .results-section.active {
         display: block;
     }
-    
+
     .no-results, .search-prompt {
         text-align: center;
         padding: 40px 20px;
         color: #777;
     }
-    
+
     .no-results i, .search-prompt i {
         font-size: 3rem;
         margin-bottom: 15px;
         color: var(--medium-gray);
     }
-    
+
     /* Comic Results */
     .comics-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
         gap: 15px;
     }
-    
+
     .comic-card {
         width: 100%;
         border-radius: 8px;
@@ -272,21 +232,21 @@
         background-color: var(--white);
         transition: transform 0.2s;
     }
-    
+
     .comic-card:hover {
         transform: translateY(-5px);
     }
-    
+
     .comic-thumb {
         width: 100%;
         aspect-ratio: 3/4;
         object-fit: cover;
     }
-    
+
     .comic-card-info {
         padding: 10px;
     }
-    
+
     .comic-card-title {
         font-weight: 600;
         font-size: 0.9rem;
@@ -296,19 +256,19 @@
         -webkit-box-orient: vertical;
         overflow: hidden;
     }
-    
+
     .comic-card-author {
         font-size: 0.8rem;
         color: #666;
     }
-    
+
     /* Author Results */
     .authors-list {
         display: flex;
         flex-direction: column;
         gap: 15px;
     }
-    
+
     .author-card {
         display: flex;
         align-items: center;
@@ -317,7 +277,7 @@
         border-radius: 8px;
         box-shadow: var(--shadow);
     }
-    
+
     .author-avatar {
         width: 60px;
         height: 60px;
@@ -325,53 +285,53 @@
         object-fit: cover;
         margin-right: 15px;
     }
-    
+
     .author-info {
         flex: 1;
     }
-    
+
     .author-name {
         font-weight: 600;
         margin-bottom: 5px;
     }
-    
+
     .author-stats {
         display: flex;
         gap: 15px;
         font-size: 0.8rem;
         color: #666;
     }
-    
+
     .author-comics {
         display: flex;
         gap: 10px;
         margin-top: 10px;
     }
-    
+
     .author-comic-thumb {
         width: 40px;
         height: 50px;
         border-radius: 4px;
         object-fit: cover;
     }
-    
+
     /* Recent Searches */
     .recent-searches {
         margin-bottom: 30px;
     }
-    
+
     .recent-searches h3 {
         font-size: 1rem;
         margin-bottom: 15px;
         color: #555;
     }
-    
+
     .search-tags {
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
     }
-    
+
     .search-tag {
         background-color: var(--medium-gray);
         padding: 8px 15px;
@@ -381,30 +341,30 @@
         align-items: center;
         cursor: pointer;
     }
-    
+
     .search-tag i {
         margin-right: 8px;
         font-size: 0.8rem;
     }
-    
+
     /* Sugerencias de Búsqueda Animadas */
     .search-suggestions {
         padding: 15px;
         border-top: 1px solid var(--medium-gray);
     }
-    
+
     .suggestion-title {
         font-size: 0.9rem;
         color: #777;
         margin-bottom: 10px;
     }
-    
+
     .suggestions-list {
         display: flex;
         flex-direction: column;
         gap: 12px;
     }
-    
+
     .suggestion-item {
         display: flex;
         align-items: center;
@@ -413,54 +373,54 @@
         border-radius: 5px;
         transition: background-color 0.2s;
     }
-    
+
     .suggestion-item:hover {
         background-color: var(--light-gray);
     }
-    
+
     .suggestion-item i {
         color: #888;
         margin-right: 10px;
     }
-    
+
     /* Animaciones */
     @keyframes slideIn {
         from { transform: translateY(20px); opacity: 0; }
         to { transform: translateY(0); opacity: 1; }
     }
-    
+
     .animated-item {
         animation: slideIn 0.3s ease forwards;
         opacity: 0;
     }
-    
+
     .search-typing {
         position: relative;
     }
-    
+
     .search-typing::after {
         content: '|';
         position: absolute;
         right: -5px;
         animation: blink 1s infinite;
     }
-    
+
     @keyframes blink {
         0%, 100% { opacity: 1; }
         50% { opacity: 0; }
     }
-    
+
     /* Loader */
     .loader {
         display: none;
         text-align: center;
         padding: 30px 0;
     }
-    
+
     .loader.active {
         display: block;
     }
-    
+
     .loader-spinner {
         width: 40px;
         height: 40px;
@@ -470,12 +430,12 @@
         margin: 0 auto 10px;
         animation: spin 1s linear infinite;
     }
-    
+
     @keyframes spin {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
     }
-    
+
     /* Responsive */
     @media (max-width: 768px) {
         .comics-grid {
@@ -483,7 +443,7 @@
         }
     }
   </style>
-  
+
   <!-- ESTILOS ORIGINALES (Main Page y Publicar) -->
   <style>
     /* VARIABLES Y RESET */
@@ -497,18 +457,18 @@
       --white: #ffffff;
       --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
-    
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
-    
+
     body {
       background-color: var(--light-gray);
     }
-    
+
     /* BARRA DE NAVEGACIÓN */
     .navbar {
       background: var(--primary-gradient);
@@ -523,17 +483,17 @@
       z-index: 100;
       box-shadow: var(--shadow);
     }
-    
+
     .logo {
       font-weight: bold;
       font-size: 1.5rem;
     }
-    
+
     .nav-icons {
       display: flex;
       gap: 20px;
     }
-    
+
     .nav-icon {
       width: 30px;
       height: 30px;
@@ -545,18 +505,18 @@
       cursor: pointer;
       transition: all 0.3s;
     }
-    
+
     .nav-icon:hover {
       background-color: rgba(255, 255, 255, 0.4);
     }
-    
+
     /* MAIN PAGE Y PUBLICAR */
     .container {
       max-width: 1200px;
       margin: 0 auto;
       padding: 20px;
     }
-    
+
     .section {
       background-color: var(--white);
       border-radius: 10px;
@@ -564,13 +524,13 @@
       padding: 20px;
       box-shadow: var(--shadow);
     }
-    
+
     .section-title {
       font-size: 1.2rem;
       margin-bottom: 15px;
       color: var(--text-color);
     }
-    
+
     .carousel {
       display: flex;
       overflow-x: auto;
@@ -579,11 +539,11 @@
       scroll-snap-type: x mandatory;
       scrollbar-width: none;
     }
-    
+
     .carousel::-webkit-scrollbar {
       display: none;
     }
-    
+
     .comic-card-large {
       min-width: 150px;
       width: 150px;
@@ -596,11 +556,11 @@
       box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
       transition: transform 0.3s;
     }
-    
+
     .comic-card-large:hover {
       transform: translateY(-5px);
     }
-    
+
     .comic-card-medium {
       min-width: 120px;
       width: 120px;
@@ -613,11 +573,11 @@
       box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
       transition: transform 0.3s;
     }
-    
+
     .comic-card-medium:hover {
       transform: translateY(-5px);
     }
-    
+
     .comic-card-small {
       min-width: 100px;
       width: 100px;
@@ -630,17 +590,17 @@
       box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
       transition: transform 0.3s;
     }
-    
+
     .comic-card-small:hover {
       transform: translateY(-5px);
     }
-    
+
     .comic-cover {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
-    
+
     .comic-info {
       position: absolute;
       bottom: 0;
@@ -650,7 +610,7 @@
       padding: 10px;
       color: white;
     }
-    
+
     .comic-title {
       font-size: 0.9rem;
       font-weight: 600;
@@ -659,7 +619,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    
+
     .comic-author {
       font-size: 0.7rem;
       opacity: 0.9;
@@ -667,19 +627,19 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    
+
     .comic-rating {
       display: flex;
       align-items: center;
       font-size: 0.7rem;
       margin-top: 2px;
     }
-    
+
     .comic-rating i {
       color: gold;
       margin-right: 3px;
     }
-    
+
     /* MODAL DE DETALLES (Main Page) - Ahora en pantalla completa */
     .modal {
       display: none;
@@ -692,7 +652,7 @@
       z-index: 1000;
       overflow-y: auto;
     }
-    
+
     .modal-content {
       background-color: var(--white);
       margin: 0;
@@ -703,12 +663,12 @@
       position: relative;
       animation: modalFadeIn 0.3s;
     }
-    
+
     @keyframes modalFadeIn {
       from { opacity: 0; transform: translateY(-50px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    
+
     .close-modal {
       position: absolute;
       top: 15px;
@@ -716,68 +676,68 @@
       font-size: 1.5rem;
       cursor: pointer;
     }
-    
+
     .comic-detail {
       display: flex;
       flex-direction: column;
       gap: 20px;
     }
-    
+
     .comic-header {
       display: flex;
       gap: 20px;
     }
-    
+
     .comic-cover-large {
       width: 200px;
       height: 300px;
       border-radius: 10px;
       box-shadow: var(--shadow);
     }
-    
+
     .comic-meta {
       flex: 1;
     }
-    
+
     .comic-title-large {
       font-size: 1.5rem;
       font-weight: bold;
       margin-bottom: 10px;
     }
-    
+
     .comic-author-large {
       font-size: 1rem;
       color: var(--secondary-color);
       margin-bottom: 15px;
     }
-    
+
     .comic-stats {
       display: flex;
       gap: 15px;
       margin-bottom: 15px;
     }
-    
+
     .stat {
       display: flex;
       align-items: center;
       gap: 5px;
       color: #666;
     }
-    
+
     .comic-genres {
       display: flex;
       flex-wrap: wrap;
       gap: 5px;
       margin-bottom: 15px;
     }
-    
+
     .genre-tag {
       background-color: var(--medium-gray);
       padding: 5px 10px;
       border-radius: 15px;
       font-size: 0.8rem;
     }
-    
+
     .read-button {
       background: var(--primary-gradient);
       color: white;
@@ -791,29 +751,29 @@
       gap: 5px;
       width: fit-content;
     }
-    
+
     .comic-description {
       line-height: 1.6;
       color: #555;
     }
-    
+
     .chapters-section {
       margin-top: 20px;
     }
-    
+
     .chapters-title {
       font-size: 1.2rem;
       margin-bottom: 15px;
       padding-bottom: 5px;
       border-bottom: 1px solid var(--medium-gray);
     }
-    
+
     .chapter-list {
       display: flex;
       flex-direction: column;
       gap: 10px;
     }
-    
+
     .chapter-item {
       padding: 10px;
       background-color: var(--light-gray);
@@ -824,50 +784,50 @@
       cursor: pointer;
       transition: background-color 0.2s;
     }
-    
+
     .chapter-item:hover {
       background-color: var(--medium-gray);
     }
-    
+
     .chapter-number {
       font-weight: bold;
     }
-    
+
     .chapter-date {
       font-size: 0.8rem;
       color: #777;
     }
-    
+
     @media (max-width: 768px) {
       .comic-header {
         flex-direction: column;
         align-items: center;
         text-align: center;
       }
-      
+
       .comic-cover-large {
         width: 150px;
         height: 225px;
       }
-      
+
       .comic-meta {
         width: 100%;
       }
-      
+
       .comic-stats, .read-button {
         justify-content: center;
         margin-left: auto;
         margin-right: auto;
       }
     }
-    
+
     /* ESTILOS DE LA PÁGINA DE PUBLICAR */
     .page-title {
       font-size: 1.8rem;
       margin-bottom: 20px;
       color: var(--text-color);
     }
-    
+
     .form-section {
       background-color: var(--white);
       padding: 25px;
@@ -875,18 +835,18 @@
       margin-bottom: 20px;
       box-shadow: var(--shadow);
     }
-    
+
     .form-group {
       margin-bottom: 20px;
     }
-    
+
     .form-label {
       display: block;
       margin-bottom: 8px;
       font-weight: 500;
       color: var(--text-color);
     }
-    
+
     .form-input {
       width: 100%;
       padding: 10px 15px;
@@ -895,12 +855,12 @@
       font-size: 1rem;
       transition: border-color 0.3s;
     }
-    
+
     .form-input:focus {
       border-color: var(--secondary-color);
       outline: none;
     }
-    
+
     .form-textarea {
       width: 100%;
       padding: 10px 15px;
@@ -911,19 +871,19 @@
       min-height: 100px;
       transition: border-color 0.3s;
     }
-    
+
     .form-textarea:focus {
       border-color: var(--secondary-color);
       outline: none;
     }
-    
+
     .cover-upload {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 15px;
     }
-    
+
     .cover-preview {
       width: 150px;
       height: 200px;
@@ -934,20 +894,20 @@
       justify-content: center;
       overflow: hidden;
     }
-    
+
     .cover-preview img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: none;
     }
-    
+
     .cover-placeholder {
       color: #999;
       text-align: center;
       padding: 0 10px;
     }
-    
+
     .upload-btn {
       background: var(--primary-gradient);
       color: white;
@@ -959,25 +919,25 @@
       align-items: center;
       gap: 8px;
     }
-    
+
     .checkbox-group {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
       margin-top: 10px;
     }
-    
+
     .checkbox-item {
       display: flex;
       align-items: center;
       gap: 5px;
     }
-    
+
     .checkbox-item input {
       width: 16px;
       height: 16px;
     }
-    
+
     .tags-input {
       display: flex;
       flex-wrap: wrap;
@@ -987,7 +947,7 @@
       border-radius: 5px;
       min-height: 48px;
     }
-    
+
     .tag {
       background-color: var(--medium-gray);
       padding: 5px 10px;
@@ -997,11 +957,11 @@
       align-items: center;
       gap: 5px;
     }
-    
+
     .tag i {
       cursor: pointer;
     }
-    
+
     .tag-input {
       border: none;
       outline: none;
@@ -1009,35 +969,35 @@
       min-width: 100px;
       height: 28px;
     }
-    
+
     .chapter-tabs {
       display: flex;
       gap: 10px;
       margin-bottom: 20px;
       border-bottom: 1px solid var(--medium-gray);
     }
-    
+
     .chapter-tab {
       padding: 10px 15px;
       cursor: pointer;
       border-bottom: 3px solid transparent;
       transition: all 0.3s;
     }
-    
+
     .chapter-tab.active {
       color: var(--primary-color);
       border-bottom-color: var(--primary-color);
       font-weight: 500;
     }
-    
+
     .tab-content {
       display: none;
     }
-    
+
     .tab-content.active {
       display: block;
     }
-    
+
     .image-upload-area {
       border: 2px dashed var(--medium-gray);
       padding: 30px;
@@ -1045,30 +1005,30 @@
       border-radius: 10px;
       margin-bottom: 20px;
     }
-    
+
     .upload-icon {
       font-size: 3rem;
       color: var(--medium-gray);
       margin-bottom: 15px;
     }
-    
+
     .upload-text {
       margin-bottom: 15px;
       color: #666;
     }
-    
+
     .file-info {
       font-size: 0.9rem;
       color: #999;
     }
-    
+
     .upload-previews {
       display: flex;
       flex-wrap: wrap;
       gap: 15px;
       margin-top: 20px;
     }
-    
+
     .preview-item {
       width: 100px;
       height: 150px;
@@ -1077,13 +1037,13 @@
       position: relative;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
-    
+
     .preview-item img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
-    
+
     .preview-item .remove-btn {
       position: absolute;
       top: 5px;
@@ -1097,7 +1057,7 @@
       justify-content: center;
       cursor: pointer;
     }
-    
+
     .pdf-preview {
       margin-top: 20px;
       padding: 20px;
@@ -1105,29 +1065,29 @@
       border-radius: 5px;
       text-align: center;
     }
-    
+
     .pdf-icon {
       font-size: 2.5rem;
       color: #e74c3c;
       margin-bottom: 10px;
     }
-    
+
     .pdf-name {
       font-size: 0.9rem;
       margin-bottom: 5px;
     }
-    
+
     .pdf-size {
       font-size: 0.8rem;
       color: #777;
     }
-    
+
     .action-buttons {
       display: flex;
       justify-content: space-between;
       margin-top: 30px;
     }
-    
+
     .cancel-btn {
       padding: 10px 20px;
       border: none;
@@ -1137,11 +1097,11 @@
       cursor: pointer;
       transition: background-color 0.3s;
     }
-    
+
     .cancel-btn:hover {
       background-color: #d1d1d1;
     }
-    
+
     .save-btn {
       padding: 10px 20px;
       border: none;
@@ -1151,11 +1111,11 @@
       cursor: pointer;
       transition: opacity 0.3s;
     }
-    
+
     .save-btn:hover {
       opacity: 0.9;
     }
-    
+
     .submit-btn {
       padding: 12px 25px;
       border: none;
@@ -1169,23 +1129,23 @@
       display: block;
       margin: 0 auto;
     }
-    
+
     .submit-btn:hover {
       opacity: 0.9;
     }
-    
+
     @media (max-width: 768px) {
       .action-buttons {
         flex-direction: column;
         gap: 10px;
       }
-      
+
       .action-buttons button {
         width: 100%;
       }
     }
   </style>
-  
+
   <!-- ESTILOS DE EDITAR PERFIL -->
   <style>
     :root {
@@ -1201,25 +1161,25 @@
       --error-color: #e74c3c;
       --success-color: #27ae60;
     }
-    
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
-    
+
     body {
       background-color: var(--light-gray);
       color: var(--text-color);
     }
-    
+
     .container {
       max-width: 800px;
       margin: 20px auto;
       padding: 0 20px;
     }
-    
+
     .section {
       background-color: var(--white);
       border-radius: 10px;
@@ -1227,7 +1187,7 @@
       padding: 20px;
       box-shadow: var(--shadow);
     }
-    
+
     .section-title {
       font-size: 1.5rem;
       font-weight: bold;
@@ -1237,22 +1197,22 @@
       align-items: center;
       gap: 10px;
     }
-    
+
     .section-title i {
       color: var(--primary-color);
     }
-    
+
     .form-group {
       margin-bottom: 20px;
     }
-    
+
     .form-label {
       display: block;
       font-weight: 600;
       margin-bottom: 8px;
       color: var(--text-color);
     }
-    
+
     .form-control {
       width: 100%;
       padding: 12px;
@@ -1261,25 +1221,25 @@
       font-size: 1rem;
       transition: border-color 0.3s;
     }
-    
+
     .form-control:focus {
       outline: none;
       border-color: var(--secondary-color);
       box-shadow: 0 0 0 2px rgba(37, 117, 252, 0.2);
     }
-    
+
     textarea.form-control {
       min-height: 100px;
       resize: vertical;
     }
-    
+
     .profile-image-container {
       display: flex;
       align-items: center;
       gap: 20px;
       margin-bottom: 20px;
     }
-    
+
     .profile-image {
       width: 100px;
       height: 100px;
@@ -1287,13 +1247,13 @@
       object-fit: cover;
       border: 3px solid var(--primary-color);
     }
-    
+
     .image-upload {
       position: relative;
       overflow: hidden;
       display: inline-block;
     }
-    
+
     .image-upload input[type=file] {
       position: absolute;
       font-size: 100px;
@@ -1302,7 +1262,7 @@
       opacity: 0;
       cursor: pointer;
     }
-    
+
     .upload-btn {
       background: var(--primary-gradient);
       color: white;
@@ -1316,23 +1276,23 @@
       font-weight: 500;
       transition: all 0.3s;
     }
-    
+
     .upload-btn:hover {
       opacity: 0.9;
       transform: translateY(-2px);
     }
-    
+
     .social-links {
       display: flex;
       flex-direction: column;
       gap: 15px;
     }
-    
+
     .social-input {
       display: flex;
       align-items: center;
     }
-    
+
     .social-icon {
       width: 40px;
       height: 40px;
@@ -1344,18 +1304,18 @@
       border-right: none;
       border-radius: 5px 0 0 5px;
     }
-    
+
     .social-control {
       flex: 1;
       border-radius: 0 5px 5px 0;
     }
-    
+
     .btn-container {
       display: flex;
       justify-content: space-between;
       margin-top: 30px;
     }
-    
+
     .btn {
       padding: 12px 25px;
       border-radius: 5px;
@@ -1365,101 +1325,99 @@
       border: none;
       font-size: 1rem;
     }
-    
+
     .btn-primary {
       background: var(--primary-gradient);
       color: white;
     }
-    
+
     .btn-primary:hover {
       opacity: 0.9;
       transform: translateY(-2px);
       box-shadow: 0 4px 8px rgba(106, 17, 203, 0.3);
     }
-    
+
     .btn-outline {
       background: transparent;
       border: 2px solid var(--primary-color);
       color: var(--primary-color);
     }
-    
+
     .btn-outline:hover {
       background-color: rgba(106, 17, 203, 0.1);
     }
-    
+
     .message {
       padding: 10px;
       border-radius: 5px;
       margin-bottom: 20px;
       display: none;
     }
-    
+
     .success {
       background-color: rgba(39, 174, 96, 0.2);
       color: var(--success-color);
       border: 1px solid var(--success-color);
     }
-    
+
     .error {
       background-color: rgba(231, 76, 60, 0.2);
       color: var(--error-color);
       border: 1px solid var(--error-color);
     }
-    
+
     .form-section {
       padding-bottom: 20px;
       margin-bottom: 20px;
       border-bottom: 1px solid var(--medium-gray);
     }
-    
+
     .form-section:last-child {
       border-bottom: none;
       margin-bottom: 0;
       padding-bottom: 0;
     }
-    
+
     .form-section-title {
       font-size: 1.2rem;
       font-weight: 600;
       margin-bottom: 15px;
       color: var(--primary-color);
     }
-    
+
     .checkbox-group {
       display: flex;
       align-items: center;
       gap: 8px;
       margin-bottom: 10px;
     }
-    
+
     .checkbox-label {
       cursor: pointer;
     }
-    
+
     .help-text {
       font-size: 0.8rem;
       color: #666;
       margin-top: 5px;
     }
-    
+
     @media (max-width: 768px) {
       .profile-image-container {
         flex-direction: column;
         align-items: flex-start;
       }
-      
+
       .btn-container {
         flex-direction: column;
         gap: 10px;
       }
-      
+
       .btn {
         width: 100%;
       }
     }
   </style>
-</head>
-<body>
   <!-- BARRA DE NAVEGACIÓN -->
   <nav class="navbar">
     <div class="logo">ComicBeaboo</div>
@@ -1471,7 +1429,7 @@
       <div class="nav-icon" id="profileNav"><i class="fas fa-user"></i></div>
     </div>
   </nav>
-  
+
   <!-- CONTENEDOR DE BÚSQUEDA -->
   <div class="search-container" id="searchContainer">
       <div class="search-header">
@@ -1484,12 +1442,12 @@
               <i class="fas fa-times clear-search" id="clearSearch"></i>
           </div>
       </div>
-      
+
       <div class="search-tabs">
           <div class="tab active" data-tab="comics">Cómics</div>
           <div class="tab" data-tab="authors">Autores</div>
       </div>
-      
+
       <div class="search-results">
           <div class="initial-search active" id="initialSearch">
               <div class="recent-searches">
@@ -1501,7 +1459,7 @@
                       <div class="search-tag"><i class="fas fa-history"></i>Fantasy World</div>
                   </div>
               </div>
-              
+
               <div class="search-suggestions">
                   <div class="suggestion-title">Populares ahora</div>
                   <div class="suggestions-list">
@@ -1524,18 +1482,18 @@
                   </div>
               </div>
           </div>
-          
+
           <div class="search-typing-container" id="searchTyping" style="display: none;">
               <div class="search-prompt">
                   <div class="search-typing" id="typingText">Buscando</div>
               </div>
           </div>
-          
+
           <div class="loader" id="searchLoader">
               <div class="loader-spinner"></div>
               <div>Buscando resultados...</div>
           </div>
-          
+
           <div class="results-section" id="comicsResults">
               <div class="comics-grid" id="comicsGrid">
                   <!-- Se cargarán dinámicamente los cómics -->
@@ -1545,7 +1503,7 @@
                   <div>No se encontraron cómics con ese término</div>
               </div>
           </div>
-          
+
           <div class="results-section" id="authorsResults">
               <div class="authors-list" id="authorsList">
                   <!-- Se cargarán dinámicamente los autores -->
@@ -1557,7 +1515,7 @@
           </div>
       </div>
   </div>
-  
+
   <!-- CONTENIDO PRINCIPAL (Main Page) -->
   <div id="mainContent" class="container">
     <!-- Cómics Destacados -->
@@ -1632,7 +1590,7 @@
         </div>
       </div>
     </section>
-    
+
     <!-- Cómics Populares -->
     <section class="section">
       <h2 class="section-title">Cómics Populares</h2>
@@ -1688,7 +1646,7 @@
         </div>
       </div>
     </section>
-    
+
     <!-- Recién Publicados -->
     <section class="section">
       <h2 class="section-title">Recién Publicados</h2>
@@ -1752,7 +1710,7 @@
       </div>
     </section>
   </div>
-  
+
   <!-- MODAL DE DETALLES DEL CÓMIC -->
   <div id="comicModal" class="modal">
     <div class="modal-content">
@@ -1819,7 +1777,7 @@
       </div>
     </div>
   </div>
-  
+
   <!-- SECCIÓN DE PUBLICAR -->
   <div id="publishContent" class="container" style="max-width: 800px; display:none;">
     <h1 class="page-title">Publicar un Nuevo Cómic</h1>
@@ -1898,7 +1856,7 @@
         </div>
       </div>
     </section>
-    
+
     <section class="form-section">
       <h2 class="section-title">Primer Capítulo</h2>
       <div class="form-group">
@@ -1956,7 +1914,7 @@
           <div class="upload-text">
             Arrastra y suelta tu archivo PDF aquí o haz clic para seleccionar
           </div>
-          <button class="upload-btn" onclick="document.getElementById('pdfUploadPub').click()">
+          <button<button class="upload-btn" onclick="document.getElementById('pdfUploadPub').click()">
             <i class="fas fa-upload"></i>
             Seleccionar PDF
           </button>
@@ -1983,7 +1941,7 @@
     </section>
     <button class="submit-btn" id="publishBtn">Publicar Cómic</button>
   </div>
-  
+
   <!-- SECCIÓN DE EDITAR PERFIL -->
   <div id="editProfileContent" class="container" style="display:none;">
     <div class="message success" id="success-message">
@@ -2120,7 +2078,7 @@
       </form>
     </section>
   </div>
-  
+
   <!-- SCRIPTS DE BÚSQUEDA -->
   <script>
     // Elementos DOM para la búsqueda
@@ -2142,7 +2100,7 @@
     const noAuthorsResults = document.getElementById('noAuthorsResults');
     const searchTags = document.querySelectorAll('.search-tag');
     const suggestionItems = document.querySelectorAll('.suggestion-item');
-    
+
     // Se dejan los arrays de ejemplo por defecto (puedes conservarlos como fallback)
     const sampleComics = [
       { id: 1, title: 'Epic Hero', author: 'MaxArts', cover: '/api/placeholder/130/180' },
@@ -2152,13 +2110,13 @@
       { id: 5, title: 'Robot Wars', author: 'TechDraw', cover: '/api/placeholder/130/180' },
       { id: 6, title: 'Magic Academy', author: 'WizardArt', cover: '/api/placeholder/130/180' }
     ];
-    
+
     const sampleAuthors = [
       { id: 1, name: 'MaxArts', followers: '12.5K', comics: '8', avatar: '/api/placeholder/60/60', comicThumbs: ['/api/placeholder/40/50', '/api/placeholder/40/50', '/api/placeholder/40/50'] },
       { id: 2, name: 'ComicQueen', followers: '45.2K', comics: '15', avatar: '/api/placeholder/60/60', comicThumbs: ['/api/placeholder/40/50', '/api/placeholder/40/50'] },
       { id: 3, name: 'ArtMaster', followers: '8.7K', comics: '5', avatar: '/api/placeholder/60/60', comicThumbs: ['/api/placeholder/40/50'] }
     ];
-    
+
     // Abrir el panel de búsqueda
     searchIcon.addEventListener('click', () => {
       searchContainer.classList.add('active');
@@ -2166,20 +2124,20 @@
         searchInput.focus();
       }, 300);
     });
-    
+
     // Cerrar el panel de búsqueda
     backButton.addEventListener('click', () => {
       searchContainer.classList.remove('active');
       resetSearch();
     });
-    
+
     // Limpiar campo de búsqueda
     clearSearch.addEventListener('click', () => {
       searchInput.value = '';
       clearSearch.classList.remove('visible');
       resetSearch();
     });
-    
+
     // Mostrar/ocultar botón limpiar y buscar
     searchInput.addEventListener('input', (e) => {
       const value = e.target.value.trim();
@@ -2198,7 +2156,7 @@
         resetSearch();
       }
     });
-    
+
     // Cambio de pestañas
     tabs.forEach(tab => {
       tab.addEventListener('click', () => {
@@ -2217,7 +2175,7 @@
         }
       });
     });
-    
+
     // Simulación de clic en tags de búsqueda
     searchTags.forEach(tag => {
       tag.addEventListener('click', () => {
@@ -2226,7 +2184,7 @@
         searchInput.dispatchEvent(new Event('input'));
       });
     });
-    
+
     // Simulación de clic en sugerencias
     suggestionItems.forEach(item => {
       item.addEventListener('click', () => {
@@ -2235,7 +2193,7 @@
         searchInput.dispatchEvent(new Event('input'));
       });
     });
-    
+
     // Animación de escritura
     function simulateTypingAnimation(text) {
       typingText.textContent = 'Buscando';
@@ -2247,73 +2205,56 @@
         typingText.textContent = `Buscando${dotsText}`;
       }, 300);
     }
-    
-    // Función de búsqueda real usando Firebase
-    function performSearch(query) {
+
+    // Función de búsqueda real usando Supabase
+    async function performSearch(query) {
       // Limpiar resultados previos
       comicsGrid.innerHTML = '';
       authorsList.innerHTML = '';
       searchLoader.classList.add('active');
-      
+
       const activeTab = document.querySelector('.tab.active').getAttribute('data-tab');
-      
-      if (activeTab === 'comics') {
-        // Consultar cómics reales desde Firebase
-        const comicsRef = window.firebaseRef(window.database, 'comics');
-        window.firebaseGet(comicsRef).then((snapshot) => {
-          searchLoader.classList.remove('active');
-          if (snapshot.exists()) {
-            const comicsData = snapshot.val();
-            const comicsArray = Object.keys(comicsData).map(key => ({ id: key, ...comicsData[key] }));
-            const filteredComics = comicsArray.filter(comic => 
-              (comic.title && comic.title.toLowerCase().includes(query.toLowerCase())) ||
-              (comic.author && comic.author.toLowerCase().includes(query.toLowerCase()))
-            );
-            if (filteredComics.length > 0) {
-              noComicsResults.style.display = 'none';
-              renderComics(filteredComics);
-            } else {
-              noComicsResults.style.display = 'block';
-            }
+
+      try {
+        if (activeTab === 'comics') {
+          // Buscar cómics en Supabase
+          const { data: comics, error } = await supabase
+            .from('comics')
+            .select('*')
+            .textSearch('title', query)
+            .order('published_at', { ascending: false });
+
+          if (error) throw error;
+
+          if (comics.length > 0) {
+            noComicsResults.style.display = 'none';
+            renderComics(comics);
           } else {
             noComicsResults.style.display = 'block';
           }
-          comicsResults.classList.add('active');
-          authorsResults.classList.remove('active');
-        }).catch(error => {
-          console.error("Error al obtener cómics:", error);
-          searchLoader.classList.remove('active');
-        });
-      } else {
-        // Consultar perfiles de usuario desde Firebase (nodo "users")
-        const usersRef = window.firebaseRef(window.database, 'users');
-        window.firebaseGet(usersRef).then((snapshot) => {
-          searchLoader.classList.remove('active');
-          if (snapshot.exists()) {
-            const usersData = snapshot.val();
-            const usersArray = Object.keys(usersData).map(key => ({ id: key, ...usersData[key] }));
-            const filteredUsers = usersArray.filter(user => 
-              (user.username && user.username.toLowerCase().includes(query.toLowerCase())) ||
-              (user.displayName && user.displayName.toLowerCase().includes(query.toLowerCase()))
-            );
-            if (filteredUsers.length > 0) {
-              noAuthorsResults.style.display = 'none';
-              renderAuthors(filteredUsers);
-            } else {
-              noAuthorsResults.style.display = 'block';
-            }
+        } else {
+          // Buscar autores en Supabase (asumiendo una tabla 'authors')
+          const { data: authors, error } = await supabase
+            .from('authors')
+            .select('*')
+            .textSearch('name', query);
+
+          if (error) throw error;
+
+          if (authors.length > 0) {
+            noAuthorsResults.style.display = 'none';
+            renderAuthors(authors);
           } else {
             noAuthorsResults.style.display = 'block';
           }
-          comicsResults.classList.remove('active');
-          authorsResults.classList.add('active');
-        }).catch(error => {
-          console.error("Error al obtener usuarios:", error);
-          searchLoader.classList.remove('active');
-        });
+        }
+      } catch (error) {
+        console.error("Error during search:", error);
+      } finally {
+        searchLoader.classList.remove('active');
       }
     }
-    
+
     // Renderizar cómics
     function renderComics(comics) {
       comicsGrid.innerHTML = '';
@@ -2322,16 +2263,15 @@
         comicCard.className = 'comic-card animated-item';
         comicCard.style.animationDelay = `${index * 0.1}s`;
         comicCard.innerHTML = `
-          <img src="${comic.cover || '/api/placeholder/130/180'}" alt="${comic.title}" class="comic-thumb">
+          <img src="${comic.cover_url || '/api/placeholder/130/180'}" alt="${comic.title}" class="comic-thumb">
           <div class="comic-card-info">
             <div class="comic-card-title">${comic.title}</div>
-            <div class="comic-card-author">Por: ${comic.author}</div>
-          </div>
+            <div class="comic-card-author">Por: ${comic.author_id}</div> </div>
         `;
         comicsGrid.appendChild(comicCard);
       });
     }
-    
+
     // Renderizar autores
     function renderAuthors(authors) {
       authorsList.innerHTML = '';
@@ -2339,14 +2279,10 @@
         const authorCard = document.createElement('div');
         authorCard.className = 'author-card animated-item';
         authorCard.style.animationDelay = `${index * 0.1}s`;
-        // Usar avatar o placeholder
-        const avatar = author.avatar || '/api/placeholder/60/60';
-        // Mostrar displayName o username
-        const name = author.displayName || author.username || 'Usuario';
         authorCard.innerHTML = `
-          <img src="${avatar}" alt="${name}" class="author-avatar">
+          <img src="${author.avatar || '/api/placeholder/60/60'}" alt="${author.name}" class="author-avatar">
           <div class="author-info">
-            <div class="author-name">${name}</div>
+            <div class="author-name">${author.name}</div>
             <div class="author-stats">
               <div>${author.followers || ''} seguidores</div>
               <div>${author.comics || ''} cómics</div>
@@ -2356,7 +2292,7 @@
         authorsList.appendChild(authorCard);
       });
     }
-    
+
     // Resetear búsqueda
     function resetSearch() {
       clearInterval(window.typingInterval);
@@ -2370,56 +2306,77 @@
       noAuthorsResults.style.display = 'none';
     }
   </script>
-  
-  <!-- SCRIPTS ORIGINALES (Modal, Publicar, Editar Perfil y Firebase) -->
+
+  <!-- SCRIPTS ORIGINALES (Modal, Publicar, Editar Perfil y Supabase) -->
   <script>
     // Funciones para el modal
     function openModal() {
       document.getElementById('comicModal').style.display = 'block';
       document.body.style.overflow = 'hidden';
     }
-    
+
     function closeModal() {
       document.getElementById('comicModal').style.display = 'none';
       document.body.style.overflow = 'auto';
     }
-    
+
     window.onclick = function(event) {
       const modal = document.getElementById('comicModal');
       if (event.target == modal) {
         closeModal();
       }
     }
-    
-    // Publicar cómic (integrado con Firebase)
+
+    // Publicar cómic (integrado con Supabase)
     const publishBtn = document.getElementById('publishBtn');
     publishBtn.addEventListener('click', publicarComic);
-    
-    function publicarComic(event) {
+
+    async function publicarComic(event) {
       event.preventDefault();
       publishBtn.disabled = true;
       publishBtn.textContent = "Publicando...";
-      
+
       // Recoger datos del formulario de publicar
       const title = document.getElementById('comicTitle').value;
       const synopsis = document.getElementById('comicSynopsis').value;
+      const coverFile = document.getElementById('coverUploadPub').files[0];
       const genres = [];
       document.querySelectorAll('#publishContent .checkbox-item input:checked').forEach(cb => {
         genres.push(cb.nextElementSibling.textContent);
       });
-      
-      // Prepara un objeto con la información del cómic
-      const comicData = {
-        title,
-        synopsis,
-        genres,
-        publishedAt: new Date().toISOString()
-      };
-      
-      // Usamos las variables globales asignadas por el módulo Firebase
-      const newComicRef = window.firebasePush(window.firebaseRef(window.database, 'comics'));
-      window.firebaseSet(newComicRef, comicData)
-      .then(() => {
+
+      try {
+        // Subir la portada a Supabase Storage
+        const coverPath = `covers/${Date.now()}-${coverFile.name}`;
+        const { data: coverData, error: coverError } = await supabase.storage
+          .from('comics')
+          .upload(coverPath, coverFile);
+
+        if (coverError) throw coverError;
+
+        // Obtener URL de la portada
+        const { data: { publicUrl: coverUrl } } = supabase.storage
+          .from('comics')
+          .getPublicUrl(coverPath);
+
+        // Preparar y guardar datos del cómic
+        const comicData = {
+          title,
+          synopsis,
+          genres,
+          cover_url: coverUrl,
+          published_at: new Date().toISOString(),
+          author_id: 'USER_ID' // Reemplazar con ID real del usuario
+        };
+
+        const { data, error } = await supabase
+          .from('comics')
+          .insert(comicData)
+          .select()
+          .single();
+
+        if (error) throw error;
+
         publishBtn.textContent = "Publicado!";
         setTimeout(() => {
           document.getElementById('publishContent').style.display = 'none';
@@ -2427,34 +2384,33 @@
           publishBtn.disabled = false;
           publishBtn.textContent = "Publicar Cómic";
         }, 2000);
-      })
-      .catch(error => {
+      } catch (error) {
         console.error("Error al publicar cómic:", error);
         publishBtn.textContent = "Publicar Cómic";
         publishBtn.disabled = false;
-      });
+      }
     }
-    
+
     // Navegación entre secciones
     document.getElementById('publishNav').addEventListener('click', () => {
       document.getElementById('mainContent').style.display = 'none';
       document.getElementById('editProfileContent').style.display = 'none';
       document.getElementById('publishContent').style.display = 'block';
     });
-    
+
     document.getElementById('homeNav').addEventListener('click', () => {
       document.getElementById('publishContent').style.display = 'none';
       document.getElementById('editProfileContent').style.display = 'none';
       document.getElementById('mainContent').style.display = 'block';
     });
-    
+
     document.getElementById('profileNav').addEventListener('click', () => {
       document.getElementById('mainContent').style.display = 'none';
       document.getElementById('publishContent').style.display = 'none';
       document.getElementById('editProfileContent').style.display = 'block';
     });
-    
-    // Editar Perfil (integrado con Firebase)
+
+    // Editar Perfil (integrado con Supabase -  Necesitaría implementación similar a publicarComic)
     document.getElementById('profile-image').addEventListener('change', function(e) {
       const file = e.target.files[0];
       if (file) {
@@ -2465,8 +2421,8 @@
         reader.readAsDataURL(file);
       }
     });
-    
-    document.getElementById('edit-profile-form').addEventListener('submit', function(e) {
+
+    document.getElementById('edit-profile-form').addEventListener('submit', async function(e) {
       e.preventDefault();
       // Recoger datos del formulario de perfil
       const username = document.getElementById('username').value;
@@ -2474,31 +2430,46 @@
       const email = document.getElementById('email').value;
       const bio = document.getElementById('bio').value;
       const location = document.getElementById('location').value;
-      
-      // Actualizar en Firebase en el nodo "users" para el usuario (ejemplo con ID fijo)
-      const userId = "usuario123"; // En producción, este ID vendría de la autenticación
-      window.firebaseUpdate(window.firebaseRef(window.database, 'users/' + userId), {
-        username,
-        displayName,
-        email,
-        bio,
-        location
-      })
-      .then(() => {
+      const profileImageFile = document.getElementById('profile-image').files[0];
+
+
+      try {
+        // Subir la foto de perfil a Supabase Storage (si hay una nueva)
+        let profileImageUrl = null;
+        if(profileImageFile){
+          const profileImagePath = `profile_images/${Date.now()}-${profileImageFile.name}`;
+          const { data: profileImageData, error: profileImageError } = await supabase.storage
+            .from('profile_images')
+            .upload(profileImagePath, profileImageFile);
+          if (profileImageError) throw profileImageError;
+          const { data: { publicUrl: profileImageURL } } = supabase.storage
+            .from('profile_images')
+            .getPublicUrl(profileImagePath);
+          profileImageUrl = profileImageURL;
+        }
+
+        // Actualizar en Supabase la tabla de usuarios (asumiendo una tabla 'users')
+        const userId = "usuario123"; // Reemplazar con ID real del usuario
+        const { data, error } = await supabase
+          .from('users')
+          .update({ username, displayName, email, bio, location, profile_image_url: profileImageUrl })
+          .eq('id', userId)
+          .select()
+          .single();
+          if(error) throw error;
         document.getElementById('success-message').style.display = 'block';
         setTimeout(function() {
           document.getElementById('success-message').style.display = 'none';
         }, 3000);
-      })
-      .catch(error => {
+      } catch (error) {
         console.error("Error al actualizar perfil:", error);
         document.getElementById('error-message').style.display = 'block';
         setTimeout(function() {
           document.getElementById('error-message').style.display = 'none';
         }, 3000);
-      });
+      }
     });
-    
+
     document.getElementById('cancel-btn').addEventListener('click', function() {
       if (confirm('¿Estás seguro de que deseas cancelar? Los cambios no guardados se perderán.')) {
         window.location.href = 'perfil.html';
@@ -2508,6 +2479,6 @@
 </body>
 </html>
 <!-- partial -->
-  
+
 </body>
 </html>
